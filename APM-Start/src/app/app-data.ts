@@ -1,4 +1,4 @@
-import { InMemoryDbService } from 'angular-in-memory-web-api';
+import { InMemoryDbService } from 'angular-in-memory-web-api'; // Jet: This is how Deborah creates fake db with the classes found in the app that contains the data
 
 import { ProductData } from './products/product-data';
 import { ProductCategoryData } from './product-categories/product-category-data';

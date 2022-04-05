@@ -23,8 +23,7 @@
     </div>
 
     <div class="table-responsive">
-      <table class="table mb-0"
-             *ngIf="products">
+      <table class="table mb-0" *ngIf="products$ | async as products"> <!-- Previously just *ngIf="Products" -->
         <thead>
           <tr>
             <th>Product</th>

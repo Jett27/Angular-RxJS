@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
-import { Subscription } from 'rxjs';
+import { catchError, EMPTY, Subscription } from 'rxjs';
 
 import { Product } from '../product';
 import { ProductService } from '../product.service';
@@ -9,7 +9,7 @@ import { ProductService } from '../product.service';
   selector: 'pm-product-list',
   templateUrl: './product-list-alt.component.html'
 })
-export class ProductListAltComponent implements OnInit, OnDestroy {
+export class ProductListAltComponent implements OnDestroy {
   pageTitle = 'Products';
   errorMessage = '';
   selectedProductId = 0;
@@ -17,14 +17,14 @@ export class ProductListAltComponent implements OnInit, OnDestroy {
   products: Product[] = [];
   sub!: Subscription;
 
-  constructor(private productService: ProductService) { }
+  products$ = this.productService.products$.pipe(
+    catchError(err => {
+      this.errorMessage = err;
+      return EMPTY; // Return an empty observable when error happens ORRR you can return an Observable of the Product[] using the "of" creation function of rxjs
+    })
+  );
 
-  ngOnInit(): void {
-    this.sub = this.productService.getProducts().subscribe({
-      next: products => this.products = products,
-      error: err => this.errorMessage = err
-    });
-  }
+  constructor(private productService: ProductService) { }
 
   ngOnDestroy(): void {
     this.sub.unsubscribe();
